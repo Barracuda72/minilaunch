@@ -1,3 +1,6 @@
+A fork of https://github.com/monobogdan/monolaunch aimed at providing feature-phone experience for modern keypad Android smartphones
+===============
+Original README
 # What is it?
 
 This is very light application launcher (or home screen) for Mocor-based cell phones. It seems like they are getting popular and you can buy it from TaoBao or AliExpress in 2019-2023 year.
