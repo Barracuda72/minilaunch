@@ -120,14 +120,6 @@ class AppListView extends GridView
         rebuildUI();
     }
 
-    static private Bitmap getBitmapFromDrawable(Drawable drawable) {
-        final Bitmap bmp = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
-        final Canvas canvas = new Canvas(bmp);
-        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
-        drawable.draw(canvas);
-        return bmp;
-    }
-
     static private Bitmap getScaledBitmapFromDrawable(Drawable drawable, int width, int height) {
         final Bitmap bmp = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
         final Canvas canvas = new Canvas(bmp);
@@ -171,8 +163,7 @@ class AppListView extends GridView
             ImageButton button = new ImageButton(getContext());
             button.setBackgroundColor(Color.TRANSPARENT);
             button.setFocusable(true);
-
-            //button.setImageBitmap(Bitmap.createScaledBitmap (((BitmapDrawable)app.icon).getBitmap(), 36, 36, false));
+            
             button.setImageBitmap(getScaledBitmapFromDrawable(app.icon, 36, 36));
             widgetList.add(button);
         }
