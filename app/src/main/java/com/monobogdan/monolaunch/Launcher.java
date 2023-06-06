@@ -20,6 +20,7 @@ import com.monobogdan.monolaunch.widgets.PlayerWidget;
 import com.monobogdan.monolaunch.widgets.StatusWidget;
 
 public class Launcher extends Activity {
+    private static Launcher singleton = null;
 
     public class LauncherView extends View
     {
@@ -132,7 +133,7 @@ public class Launcher extends Activity {
 
             if(keyCode == KeyEvent.KEYCODE_DPAD_DOWN)
             {
-                switchToTasks();
+                switchToTest();
 
                 return true;
             }
@@ -178,6 +179,7 @@ public class Launcher extends Activity {
     private LauncherView launcherView;
     private AppListView appList;
     private DialerView dialerView;
+    private TestMenuView testView;
     private Tasks tasks;
 
     private int clientHeight;
@@ -189,47 +191,50 @@ public class Launcher extends Activity {
 
     public void switchToHome()
     {
-        setContentView(launcherView);
-        launcherView.requestFocus();
-
-        launcherView.setAlpha(0);
-        launcherView.animate().
-                alpha(1.0f).
-                setDuration(350);
+        switchToView(launcherView);
     }
 
     private void switchToDialer()
     {
-        setContentView(dialerView);
-        dialerView.requestFocus();
-        dialerView.setTranslationY(clientHeight);
-        dialerView.animate().
-                setDuration(250).
-                translationY(0);
+        switchToView(dialerView);
     }
 
     private void switchToMainMenu()
     {
-        setContentView(appList);
-        appList.requestFocus();
-        appList.setTranslationY(clientHeight);
-        appList.animate().
-                setDuration(250).
-                translationY(0);
+        switchToView(appList);
     }
 
     private void switchToTasks()
     {
         tasks.updateTaskList();
-        setContentView(tasks);
-        tasks.requestFocus();
-        tasks.setTranslationX(clientWidth);
-        tasks.animate().setDuration(250).translationX(0);
+        switchToView(tasks);
+    }
+
+    private void switchToTest() {
+        switchToView(testView);
+    }
+
+    public static void switchTo(View view) {
+        singleton.switchToView(view);
+    }
+
+    private void switchToView(View view) {
+        setContentView(view);
+        view.requestFocus();
+        view.setTranslationX(clientWidth);
+        view.animate()
+                .setDuration(250)
+                .translationX(0);
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (singleton == null)
+            singleton = this;
+        else
+            throw new RuntimeException("Launcher singleton already exists! Crashing.");
 
         dialerView = new DialerView(getApplicationContext());
         tasks = new Tasks(this);
@@ -242,6 +247,10 @@ public class Launcher extends Activity {
         appList.setFocusable(true);
         launcherView.setFocusable(true);
         launcherView.requestFocus();
+
+        testView = new TestMenuView(getApplicationContext());
+        testView.setParent(launcherView);
+        testView.setFocusable(true);
 
         cachedBackground = getWindow().getDecorView().getBackground();
         getWindow().setBackgroundDrawable(getWallpaper());
