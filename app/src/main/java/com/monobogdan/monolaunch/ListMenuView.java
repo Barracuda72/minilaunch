@@ -36,6 +36,12 @@ public class ListMenuView extends BaseMenuView {
         }
     }
 
+    @Override
+    protected void processSelection(int item) {
+        //setSelection(item);
+        throw new RuntimeException("Unimplemented!");
+    }
+
     public void setAdapter(BaseAdapter adapter) {
         ListView listView = (ListView)getContentView();
         listView.setAdapter(adapter);

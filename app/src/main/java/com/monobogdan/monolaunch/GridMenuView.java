@@ -1,12 +1,14 @@
 package com.monobogdan.monolaunch;
 
 import android.content.Context;
+import android.graphics.Canvas;
 import android.graphics.Color;
-import android.view.KeyEvent;
-import android.view.MotionEvent;
-import android.view.View;
-import android.view.ViewGroup;
+import android.graphics.ColorFilter;
+import android.graphics.drawable.Drawable;
+import android.view.*;
 import android.widget.*;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,9 +22,9 @@ public class GridMenuView extends BaseMenuView {
         GridView gridView = (GridView)getContentView();
 
         gridView.setNumColumns(3);
-        gridView.setColumnWidth(getWidth() / 3 - 10);
         gridView.setClickable(true);
         gridView.setSelector(R.drawable.none);
+
         gridView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -36,11 +38,29 @@ public class GridMenuView extends BaseMenuView {
         GridView gridView = (GridView)getContentView();
         gridView.setAdapter(adapter);
 
+        LayoutParams layoutParams = new LayoutParams(
+                LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT
+        );
+
+        layoutParams.leftMargin = 30;
+
+        gridView.setLayoutParams(layoutParams);
+
+        gridView.setColumnWidth(130);
+        gridView.setHorizontalSpacing(10);
+        gridView.setVerticalSpacing(10);
+        gridView.setStretchMode(GridView.NO_STRETCH);
+        gridView.invalidateViews();
+        //gridView.setBackgroundColor(Color.RED);
+
         gridView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if(view != null) {
                     view.animate().scaleX(1.1f).scaleY(1.2f).setDuration(100);
+                    ImageButton butt = (ImageButton)view;
+                    setHeader(Extension.getScaledBitmapFromDrawable(butt.getDrawable().getConstantState().newDrawable(),36 ,36), butt.getTag().toString(), selectedItem+1);
+                    refresh();
                 }
                 if (prevSelected != view) {
                     if (prevSelected != null)
@@ -51,7 +71,7 @@ public class GridMenuView extends BaseMenuView {
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                setSelection(0);
+                setSelection(selectedItem);
             }
         });
     }
@@ -85,6 +105,10 @@ public class GridMenuView extends BaseMenuView {
             default:
                 throw new RuntimeException("Unknown keycode for processNav: " + keyCode);
         }
+    }
 
+    @Override
+    protected void processSelection(int item) {
+        setSelection(item-1);
     }
 }

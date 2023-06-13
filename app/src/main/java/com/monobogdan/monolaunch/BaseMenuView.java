@@ -238,7 +238,7 @@ public abstract class BaseMenuView extends LinearLayout {
                 default:
                     selected_item = keyCode - KeyEvent.KEYCODE_0;
             };
-            //contentView.processSelection(selected_item);
+            processSelection(selected_item);
             return true;
         }
 
@@ -260,6 +260,13 @@ public abstract class BaseMenuView extends LinearLayout {
     protected void processEnter() {
         Log.i(TAG, "UNIMPLEMENTED!");
     }
+
+    protected void refresh() {
+        topBar.invalidate();
+        bottomBar.invalidate();
+    }
+
+    protected abstract void processSelection(int item);
 
     protected abstract void processNav(int keyCode, KeyEvent event);
 }
