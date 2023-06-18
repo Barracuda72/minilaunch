@@ -53,7 +53,7 @@ public class StatusWidget extends BroadcastReceiver {
         smsSender = "";
 
         paint = new Paint();
-        paint.setTextSize(12.0f);
+        paint.setTextSize(20);
         paint.setColor(Color.WHITE);
         paint.setAntiAlias(true);
         paint.setShadowLayer(1, 1, 1, Color.DKGRAY);

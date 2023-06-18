@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.database.DataSetObserver;
@@ -75,19 +76,22 @@ class AppListView extends GridView
         filter.addCategory(Intent.CATEGORY_LAUNCHER);
 
         PackageManager pm = getContext().getPackageManager();
-        //List<ResolveInfo> apps = pm.queryIntentActivities(filter, 0);
-        List<ApplicationInfo> apps = pm.getInstalledApplications(0);
+        //List<ResolveInfo> apps = pm.queryIntentActivities(filter, PackageManager.GET_META_DATA);
+        //List<ApplicationInfo> apps = pm.getInstalledApplications(0);
+        List<PackageInfo> apps = pm.getInstalledPackages(0);
 
-        for (ApplicationInfo info:
+        for (PackageInfo info:
                 apps) {
             AppInfo app = new AppInfo();
             ;
-            app.name = info.loadLabel(pm).toString();
-            app.icon = info.loadIcon(pm);
+            app.name = info.applicationInfo.loadLabel(pm).toString();
+            app.icon = info.applicationInfo.loadIcon(pm);
             app.intent = pm.getLaunchIntentForPackage(info.packageName);
 
-            if(app.intent == null)
+            if(app.intent == null) {
+                Log.i("Test", "fetchAppList: skipping " + String.format("%s", app.name));
                 continue;
+            }
 
             Log.i("Test", "fetchAppList: " + String.format("%s %s", app.name, app.intent));
             installedApps.add(app);

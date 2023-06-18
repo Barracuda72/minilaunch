@@ -50,7 +50,7 @@ public class Launcher extends Activity {
             fontPaint = new Paint();
             fontPaint.setColor(Color.WHITE);
             fontPaint.setAntiAlias(true);
-            fontPaint.setTextSize(16);
+            fontPaint.setTextSize(24);
 
             statusWidget = new StatusWidget(this);
 
@@ -123,7 +123,7 @@ public class Launcher extends Activity {
             if(keyCode == KeyEvent.KEYCODE_DPAD_RIGHT)
             {
                 try {
-                    startActivity(getContext().getPackageManager().getLaunchIntentForPackage("com.whatsapp"));
+                    startActivity(getContext().getPackageManager().getLaunchIntentForPackage("com.android.deskclock"));
                 } catch(Exception e)
                 {
 
@@ -201,7 +201,7 @@ public class Launcher extends Activity {
 
     private void switchToMainMenu()
     {
-        switchToView(appList);
+        switchToView(testView);
     }
 
     private void switchToTasks()
@@ -211,7 +211,7 @@ public class Launcher extends Activity {
     }
 
     private void switchToTest() {
-        switchToView(testView);
+        switchToView(appList);
     }
 
     public static void switchTo(View view) {
