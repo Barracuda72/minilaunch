@@ -57,9 +57,9 @@ public class GridMenuView extends BaseMenuView {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if(view != null) {
-                    view.animate().scaleX(1.1f).scaleY(1.2f).setDuration(100);
+                    view.animate().scaleX(1.2f).scaleY(1.2f).setDuration(100);
                     ImageButton butt = (ImageButton)view;
-                    setHeader(Extension.getScaledBitmapFromDrawable(butt.getDrawable().getConstantState().newDrawable(),36 ,36), butt.getTag().toString(), selectedItem+1);
+                    setHeader(Extension.getScaledBitmapFromDrawable(butt.getDrawable().getConstantState().newDrawable(),32 ,32), butt.getTag().toString(), selectedItem+1);
                     refresh();
                 }
                 if (prevSelected != view) {
@@ -110,5 +110,12 @@ public class GridMenuView extends BaseMenuView {
     @Override
     protected void processSelection(int item) {
         setSelection(item-1);
+        processEnter();
+    }
+
+    @Override
+    protected void processEnter() {
+        GridView gridView = (GridView)getContentView();
+        gridView.getChildAt(selectedItem).performClick();
     }
 }

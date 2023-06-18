@@ -20,9 +20,6 @@ import java.util.List;
 public class TestMenuView extends GridMenuView {
     public TestMenuView (Context ctx) {
         super(ctx);
-        Drawable image = getContext().getResources().getDrawable(android.R.drawable.btn_radio);
-        setHeader(Extension.getScaledBitmapFromDrawable(image,36 ,36), "Hello world", 42);
-        setFooter("Menu", "Back");
 
         List<View> widgetList = new ArrayList<>();
 
@@ -30,19 +27,19 @@ public class TestMenuView extends GridMenuView {
           // Phonebook
           "com.android.contacts",
           // Calls
-          "com.android.calllogbackup",
+          "com.android.dialer",
           // Browser
           "com.android.browser",
 
           // Camera - there's none
-          "com.android.stk",
+          "com.sprd.sprdcalculator",
           // Messages
           "com.android.mms",
           // Calendar
           "com.android.calendar",
 
           // Misc stuff
-          "com.android.phone",
+          "com.android.music",
           // Files
           "com.android.documentsui",
           // Settings
@@ -50,8 +47,8 @@ public class TestMenuView extends GridMenuView {
 
           // Extras
           "com.android.soundrecorder",
-          "com.android.dialer",
-          "com.android.egg",
+          "com.android.deskclock",
+          "com.duoqin.manager",
         };
 
         PackageManager pm = getContext().getPackageManager();
@@ -80,6 +77,8 @@ public class TestMenuView extends GridMenuView {
                 Log.i("POOK", "App info fetch FAILED: " + appIds[i]);
             }
         }
+
+        setSelection(5);
 
         /*final String[] catNames = new String[] {
                 "Рыжик", "Барсик", "Мурзик", "Мурка", "Васька",

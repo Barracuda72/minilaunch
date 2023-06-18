@@ -39,10 +39,10 @@ class BottomNavBar extends View {
         fontPaint = new Paint();
         fontPaint.setColor(Color.WHITE);
         fontPaint.setAntiAlias(true);
-        fontPaint.setTextSize(16);
+        fontPaint.setTextSize(24);
 
         Drawable checkmarkDrawable = getContext().getResources().getDrawable(android.R.drawable.checkbox_on_background);
-        checkmark = Extension.getScaledBitmapFromDrawable(checkmarkDrawable, 36, 36);
+        checkmark = Extension.getScaledBitmapFromDrawable(checkmarkDrawable, 32, 32);
     }
 
     public void setText(String left, String right) {
@@ -53,10 +53,6 @@ class BottomNavBar extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-
-        /*Paint p = new Paint();
-        p.setColor(Color.GREEN);
-        canvas.drawRect(0, 0, getWidth(), getHeight(), p);*/
 
         float metrics = fontPaint.getFontMetrics().bottom;
         float bottomLine = getHeight() - metrics - 3;
@@ -97,7 +93,7 @@ class TopNavBar extends View {
         fontPaint = new Paint();
         fontPaint.setColor(Color.WHITE);
         fontPaint.setAntiAlias(true);
-        fontPaint.setTextSize(16);
+        fontPaint.setTextSize(24);
     }
 
     public void setText(Bitmap image, String text, int number) {
@@ -113,10 +109,6 @@ class TopNavBar extends View {
         float metrics = fontPaint.getFontMetrics().bottom;
         float textLen = fontPaint.measureText(headerNumber);
 
-        /*Paint p = new Paint();
-        p.setColor(Color.RED);
-        canvas.drawRect(0, 0, getWidth(), getHeight(), p);*/
-
         float imageWidth = 0.0f;
 
         if (headerImage != null) {
@@ -124,8 +116,8 @@ class TopNavBar extends View {
             imageWidth = 5.0f + headerImage.getWidth();
         }
 
-        canvas.drawText(headerText, 5.0f + imageWidth, getHeight() / 2, defaultPaint);
-        canvas.drawText(headerNumber, getWidth() - textLen - 5.0f, getHeight() / 2, defaultPaint);
+        canvas.drawText(headerText, 5.0f + imageWidth, getHeight() / 2, fontPaint);
+        canvas.drawText(headerNumber, getWidth() - textLen - 5.0f, getHeight() / 2, fontPaint);
 
         canvas.drawLine(0, getHeight() - 3, getWidth(), getHeight() - 3, defaultPaint);
     }
@@ -169,6 +161,10 @@ public abstract class BaseMenuView extends LinearLayout {
         addView(topBar, paramsTop);
         addView(contentView, paramsMiddle);
         addView(bottomBar, paramsBottom);
+
+        Drawable image = getContext().getResources().getDrawable(android.R.drawable.btn_star);
+        setHeader(Extension.getScaledBitmapFromDrawable(image,32 ,32), "Hello world", 42);
+        setFooter("Options", "Back");
     }
 
     protected View getContentView() {
@@ -257,9 +253,7 @@ public abstract class BaseMenuView extends LinearLayout {
         Launcher.switchTo(parent);
     }
 
-    protected void processEnter() {
-        Log.i(TAG, "UNIMPLEMENTED!");
-    }
+    protected abstract void processEnter();
 
     protected void refresh() {
         topBar.invalidate();

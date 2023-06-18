@@ -2,6 +2,7 @@ package com.monobogdan.monolaunch;
 
 import android.content.Context;
 import android.view.KeyEvent;
+import android.view.View;
 import android.widget.AbsListView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
@@ -39,6 +40,11 @@ public class ListMenuView extends BaseMenuView {
     @Override
     protected void processSelection(int item) {
         //setSelection(item);
+        throw new RuntimeException("Unimplemented!");
+    }
+
+    @Override
+    protected void processEnter() {
         throw new RuntimeException("Unimplemented!");
     }
 
