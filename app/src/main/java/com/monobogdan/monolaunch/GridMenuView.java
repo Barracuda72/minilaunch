@@ -74,6 +74,8 @@ public class GridMenuView extends BaseMenuView {
                 setSelection(selectedItem);
             }
         });
+
+        setSelection(4);
     }
 
     protected void setSelection(int i) {
