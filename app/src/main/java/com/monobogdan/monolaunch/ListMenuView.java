@@ -2,14 +2,10 @@ package com.monobogdan.monolaunch;
 
 import android.content.Context;
 import android.view.KeyEvent;
-import android.view.View;
-import android.widget.AbsListView;
-import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
-import android.widget.ListView;
+import android.widget.*;
 
 public class ListMenuView extends BaseMenuView {
-    private int current_position = -1;
+    private int selectedItem = 0;
 
     public ListMenuView(Context ctx) {
         super(ctx, new ListView(ctx));
@@ -29,23 +25,34 @@ public class ListMenuView extends BaseMenuView {
                 processEnter();
                 break;
             case KeyEvent.KEYCODE_DPAD_UP:
+                selectedItem = (selectedItem+listView.getCount()-1) % listView.getCount();
+                setSelection(selectedItem);
+                break;
             case KeyEvent.KEYCODE_DPAD_DOWN:
-                listView.onKeyDown(keyCode, event);
+                selectedItem = (selectedItem+1) % listView.getCount();
+                setSelection(selectedItem);
                 break;
             default:
                 throw new RuntimeException("Unknown keycode for processNav: " + keyCode);
         }
     }
 
+    protected void setSelection(int i) {
+        selectedItem = i;
+        ListView listView = (ListView)getContentView();
+        listView.setSelection(selectedItem);
+    }
+
     @Override
     protected void processSelection(int item) {
-        //setSelection(item);
-        throw new RuntimeException("Unimplemented!");
+        setSelection(item-1);
+        processEnter();
     }
 
     @Override
     protected void processEnter() {
-        throw new RuntimeException("Unimplemented!");
+        ListView listView = (ListView)getContentView();
+        listView.getChildAt(selectedItem - listView.getFirstVisiblePosition()).performClick();
     }
 
     public void setAdapter(BaseAdapter adapter) {

@@ -191,9 +191,9 @@ public class Launcher extends Activity {
 
     private Drawable cachedBackground;
     private LauncherView launcherView;
-    private AppListView appList;
+    private NewAppListView appList;
     private DialerView dialerView;
-    private TestMenuView testView;
+    private MainMenuView testView;
     private Tasks tasks;
 
     private int clientHeight;
@@ -257,12 +257,15 @@ public class Launcher extends Activity {
         dialerView.setFocusable(true);
 
         launcherView = new LauncherView(getApplicationContext());
-        appList = new AppListView(this);
+
+        appList = new NewAppListView(this);
+        appList.setParent(launcherView);
         appList.setFocusable(true);
+
         launcherView.setFocusable(true);
         launcherView.requestFocus();
 
-        testView = new TestMenuView(getApplicationContext());
+        testView = new MainMenuView(getApplicationContext());
         testView.setParent(launcherView);
         testView.setFocusable(true);
 
