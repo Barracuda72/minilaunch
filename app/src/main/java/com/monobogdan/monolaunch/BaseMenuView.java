@@ -3,6 +3,7 @@ package com.monobogdan.monolaunch;
 import android.app.StatusBarManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -110,25 +111,27 @@ class TopNavBar extends View {
         float textLen = fontPaint.measureText(headerNumber);
 
         float imageWidth = 0.0f;
+        float imageHeight = 0.0f;
 
         if (headerImage != null) {
             canvas.drawBitmap(headerImage, 5.0f, 5.0f, defaultPaint);
             imageWidth = 5.0f + headerImage.getWidth();
+            imageHeight = 5.0f + headerImage.getHeight();
         }
 
-        canvas.drawText(headerText, 5.0f + imageWidth, getHeight() / 2, fontPaint);
-        canvas.drawText(headerNumber, getWidth() - textLen - 5.0f, getHeight() / 2, fontPaint);
+        canvas.drawText(headerText, 5.0f + imageWidth, 5.0f + imageHeight / 2, fontPaint);
+        canvas.drawText(headerNumber, getWidth() - textLen - 5.0f, 5.0f + imageHeight / 2, fontPaint);
 
-        canvas.drawLine(0, getHeight() - 3, getWidth(), getHeight() - 3, defaultPaint);
+        canvas.drawLine(0, getHeight()-1, getWidth(), getHeight()-1, defaultPaint);
     }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         int height = 0;
         if (headerImage != null) {
-            height = Math.max(height, headerImage.getHeight() + 5);
+            height = Math.max(height, headerImage.getHeight() + 10);
         }
-        height = Math.max(height, (int)(fontPaint.getFontMetrics().bottom+5));
+        height = Math.max(height, (int)(fontPaint.getFontMetrics().bottom+10));
         setMeasuredDimension(MeasureSpec.getSize(widthMeasureSpec), height);
     }
 }
@@ -162,9 +165,11 @@ public abstract class BaseMenuView extends LinearLayout {
         addView(contentView, paramsMiddle);
         addView(bottomBar, paramsBottom);
 
-        Drawable image = getContext().getResources().getDrawable(android.R.drawable.btn_star);
+        Resources res = getContext().getResources();
+        Drawable image = res.getDrawable(android.R.drawable.btn_star);
         setHeader(Extension.getScaledBitmapFromDrawable(image,32 ,32), "Hello world", 42);
-        setFooter("Options", "Back");
+
+        setFooter(res.getString(R.string.options), res.getString(R.string.back));
     }
 
     protected View getContentView() {

@@ -5,6 +5,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -45,6 +46,10 @@ public class StatusWidget extends BroadcastReceiver {
     private String smsSender;
     private int dialCount;
 
+    private String unread;
+    private String missed;
+    private String available;
+
     public StatusWidget(Launcher.LauncherView view)
     {
         this.view = view;
@@ -61,9 +66,15 @@ public class StatusWidget extends BroadcastReceiver {
         activityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
         memInfo = new ActivityManager.MemoryInfo();
 
-        iconSMS = (BitmapDrawable) context.getResources().getDrawable(R.drawable.email);
-        iconDial = (BitmapDrawable) context.getResources().getDrawable(R.drawable.dial);
-        iconRAM = (BitmapDrawable) context.getResources().getDrawable(R.drawable.cpu);
+        Resources res = context.getResources();
+
+        iconSMS = (BitmapDrawable) res.getDrawable(R.drawable.email);
+        iconDial = (BitmapDrawable) res.getDrawable(R.drawable.dial);
+        iconRAM = (BitmapDrawable) res.getDrawable(R.drawable.cpu);
+
+        missed = res.getString(R.string.missed);
+        unread = res.getString(R.string.unread);
+        available = res.getString(R.string.available);
 
         IntentFilter broadCast = new IntentFilter();
         broadCast.addAction(Telephony.Sms.Intents.SMS_RECEIVED_ACTION);
@@ -148,9 +159,9 @@ public class StatusWidget extends BroadcastReceiver {
         float animFactor = (float)Math.abs (Math.sin((new Date().getTime() - view.getTimeSinceStart()) * 0.005f));
         String senderStr = smsSender.length() > 0 ? "(" + smsSender + ")" : "";
 
-        y += drawStatusIcon(iconSMS.getBitmap(), 5.0f, y, 1.0f, String.valueOf(smsCount) + " не прочтено " + senderStr, cnvs);
-        y += drawStatusIcon(iconDial.getBitmap(), 5.0f, y, 1.0f, String.valueOf(dialCount) + " пропущено", cnvs);
-        y += drawStatusIcon(iconRAM.getBitmap(), 5.0f, y, 1.0f, memInfo.availMem / 1024 / 1024 + "мб доступно", cnvs);
+        y += drawStatusIcon(iconSMS.getBitmap(), 5.0f, y, 1.0f, String.format(unread, smsCount) + senderStr, cnvs);
+        y += drawStatusIcon(iconDial.getBitmap(), 5.0f, y, 1.0f, String.format(missed, dialCount), cnvs);
+        y += drawStatusIcon(iconRAM.getBitmap(), 5.0f, y, 1.0f, String.format(available, memInfo.availMem / 1024 / 1024), cnvs);
 
         return y;
     }

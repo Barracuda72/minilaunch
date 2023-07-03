@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.StatusBarManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -35,11 +36,18 @@ public class Launcher extends Activity {
         private StatusWidget statusWidget;
         private long timeSinceStart;
 
+        private String messages;
+        private String contacts;
+
         private PlayerWidget playerView;
 
         public LauncherView(Context ctx)
         {
             super(ctx);
+
+            Resources res = getContext().getResources();
+            messages = res.getString(R.string.messages);
+            contacts = res.getString(R.string.contacts);
 
             clockWidget = new ClockWidget(this);
             playerView = new PlayerWidget(this);
@@ -77,10 +85,16 @@ public class Launcher extends Activity {
                 return true;
             }
 
-            if(keyCode >= 7 && keyCode <= 16)
-            {
+            if (keyCode == KeyEvent.KEYCODE_CALL) {
                 startActivity(getContext().getPackageManager().getLaunchIntentForPackage("com.android.dialer"));
+            }
 
+            if(keyCode >= KeyEvent.KEYCODE_0 && keyCode <= KeyEvent.KEYCODE_9)
+            {
+                //startActivity(getContext().getPackageManager().getLaunchIntentForPackage("com.android.dialer"));
+                Intent intent = new Intent(Intent.ACTION_DIAL);
+                intent.setData(Uri.parse("tel:"+(keyCode-KeyEvent.KEYCODE_0)));
+                startActivity(intent);
                 return true;
             }
 
@@ -148,10 +162,10 @@ public class Launcher extends Activity {
         {
             float metrics = fontPaint.getFontMetrics().bottom;
             float bottomLine = getHeight() - metrics - 3;
-            float rightLine = getWidth() - fontPaint.measureText("Сообщения") - 5.0f;
+            float rightLine = getWidth() - fontPaint.measureText(messages) - 5.0f;
 
-            canvas.drawText("Контакты", 5.0f, bottomLine, fontPaint);
-            canvas.drawText("Сообщения", rightLine, bottomLine, fontPaint);
+            canvas.drawText(contacts, 5.0f, bottomLine, fontPaint);
+            canvas.drawText(messages, rightLine, bottomLine, fontPaint);
 
             float centerLine = getWidth() / 2 - (iconMenu.getMinimumWidth() / 2);
 
